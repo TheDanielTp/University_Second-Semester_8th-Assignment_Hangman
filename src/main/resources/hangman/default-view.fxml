@@ -21,7 +21,7 @@
                       <ColorAdjust brightness="-0.04" />
                   </effect>
               </ImageView>
-              <Label fx:id="hint_label" layoutX="21.0" layoutY="628.0" text="Hint:" textFill="RED">
+              <Label layoutX="21.0" layoutY="628.0" text="Hint:" textFill="RED">
                   <font>
                       <Font name="Kristen ITC" size="32.0" />
                   </font>
@@ -66,27 +66,22 @@
                       <Font size="18.0" />
                   </font>
               </TextField>
-              <Button fx:id="checkButton" layoutX="350.0" layoutY="668.0" mnemonicParsing="false" onAction="#CheckInput" prefHeight="62.0" prefWidth="148.0" style="-fx-background-color: ffffff;" text="Check" textFill="#00ff22">
+              <Button fx:id="checkButton" layoutX="357.0" layoutY="668.0" mnemonicParsing="false" onAction="#CheckInput" prefHeight="62.0" prefWidth="148.0" style="-fx-background-color: ffffff;" text="Check" textFill="#00ff22">
                   <font>
                       <Font name="Kristen ITC" size="32.0" />
                   </font>
               </Button>
-              <Label fx:id="letter_count" layoutX="154.0" layoutY="679.0" text="Count">
+              <Label fx:id="letterCountLabel" layoutX="154.0" layoutY="681.0" text="Count">
                   <font>
-                      <Font name="Kristen ITC" size="32.0" />
+                      <Font name="Kristen ITC" size="30.0" />
                   </font>
               </Label>
-              <Label fx:id="hint" layoutX="109.0" layoutY="629.0" text="Hint">
+              <Label fx:id="hintLabel" layoutX="109.0" layoutY="630.0" text="Hint">
                   <font>
-                      <Font name="Kristen ITC" size="32.0" />
+                      <Font name="Kristen ITC" size="30.0" />
                   </font>
               </Label>
-              <Button layoutX="-8.0" mnemonicParsing="false" onAction="#changeScene" prefHeight="51.0" prefWidth="99.0" style="-fx-background-color: TRANSPARENT;" text="↻">
-                  <font>
-                      <Font name="System Bold" size="43.0" />
-                  </font>
-              </Button>
-              <TextField fx:id="input" alignment="CENTER" layoutX="492.0" layoutY="674.0" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-radius: 10; -fx-border-width: 4;">
+              <TextField fx:id="input" alignment="CENTER" layoutX="494.0" layoutY="674.0" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-radius: 10; -fx-border-width: 4;">
                   <font>
                       <Font name="Kristen ITC" size="24.0" />
                   </font>
@@ -96,12 +91,47 @@
                   <Font name="Kristen ITC" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="hint_label1" layoutX="21.0" layoutY="679.0" text="Letters:" textFill="RED">
+            <Label layoutX="21.0" layoutY="679.0" text="Letters:" textFill="RED">
                <font>
                   <Font name="Kristen ITC" size="32.0" />
                </font>
             </Label>
+            <Label fx:id="gameOverLabel" alignment="CENTER" layoutX="309.0" layoutY="678.0" text="Game Over" textFill="RED" visible="false">
+               <font>
+                  <Font name="Kristen ITC" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="winLabel" alignment="CENTER" layoutX="368.0" layoutY="678.0" text="Victory" textFill="#00d1ff" visible="false">
+               <font>
+                  <Font name="Kristen ITC" size="32.0" />
+               </font>
+            </Label>
+            <Label layoutX="452.0" layoutY="28.0" text="Score:" textFill="YELLOW">
+               <font>
+                  <Font name="Kristen ITC" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoreLabel" layoutX="529.0" layoutY="25.0" text="0" textFill="YELLOW">
+               <font>
+                  <Font name="Kristen ITC" size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="tipLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="902.0" prefHeight="36.0" prefWidth="553.0" text="You can do this. I believe in you.">
+               <font>
+                  <Font name="Kristen ITC" size="22.0" />
+               </font>
+            </Label>
           </children>
       </AnchorPane>
+      <Button layoutX="3.0" layoutY="6.0" mnemonicParsing="false" onAction="#restartLevel" prefHeight="51.0" prefWidth="99.0" style="-fx-background-color: TRANSPARENT;" text="↻">
+         <font>
+            <Font name="System Bold" size="43.0" />
+         </font>
+      </Button>
+      <Button layoutX="6.0" layoutY="499.0" mnemonicParsing="false" onAction="#returnToMenu" style="-fx-background-color: TRANSPARENT;" text="↩">
+         <font>
+            <Font size="43.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

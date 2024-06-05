@@ -12,7 +12,6 @@ public class MainProgram extends Application
 {
     public static void main (String[] args)
     {
-        System.out.println ("> Program is Running");
         launch (args);
     }
 
@@ -21,13 +20,15 @@ public class MainProgram extends Application
     {
         FXMLLoader fxmlLoader = new FXMLLoader (MainProgram.class.getResource ("menu-view.fxml"));
 
-        Scene scene = new Scene (fxmlLoader.load (), 800, 650);
+        Scene scene = new Scene (fxmlLoader.load (), 590, 970);
 
         try
         {
             stage.getIcons ().add (new Image (String.valueOf (getClass ().getResource ("/hangman/images/icon.png"))));
             stage.setTitle ("Hangman");
             stage.setScene (scene);
+
+            System.out.println ("> Program is Running");
             stage.show ();
         }
         catch (Exception e)
