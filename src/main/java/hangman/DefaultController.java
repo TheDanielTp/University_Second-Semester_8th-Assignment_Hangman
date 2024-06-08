@@ -14,10 +14,15 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Random;
+import java.util.Scanner;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DefaultController
 {
@@ -27,15 +32,10 @@ public class DefaultController
     ImageView img;
 
     Image image2 = new Image (Objects.requireNonNull (getClass ().getResourceAsStream ("images/2.png")));
-
     Image image3 = new Image (Objects.requireNonNull (getClass ().getResourceAsStream ("images/3.png")));
-
     Image image4 = new Image (Objects.requireNonNull (getClass ().getResourceAsStream ("images/4.png")));
-
     Image image5 = new Image (Objects.requireNonNull (getClass ().getResourceAsStream ("images/5.png")));
-
     Image image6 = new Image (Objects.requireNonNull (getClass ().getResourceAsStream ("images/6.png")));
-
     Image image7 = new Image (Objects.requireNonNull (getClass ().getResourceAsStream ("images/7.png")));
 
     @FXML
@@ -86,52 +86,102 @@ public class DefaultController
     @FXML
     Button checkButton;
 
-    String[] data = {
-            "PARROT Bird",
-            "CARROT Rabbit"
-    };
-
-    int      random      = new Random ().nextInt (data.length);
-    String   word_hint   = data[random];
-    String[] split       = word_hint.split (" ", 2);
-    String   word        = split[0];
-    String   hint_str    = split[1];
-    int      letter_size = word.length ();
+    String word;
+    int    letterSize;
 
     public void initialize ()
     {
         startTime = LocalDateTime.now ();
+
+        getRandomWordFromApi ();
+        try
+        {
+            Thread.sleep (500);
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException (e);
+        }
+
+        System.out.println ("Word: " + word);
+        word = word.toUpperCase ();
+
+        letterSize = word.length ();
         setHint ();
+    }
+
+    public String getRandomWordFromApi ()
+    {
+        String apiUrl = "https://api.api-ninjas.com/v1/randomword";
+        String apiKey = "3GHeGCidPr0E3R27KSGtAMFiNiSMfFk0t9JxwXb2";
+        try
+        {
+            URL url = new URL (apiUrl);
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
+            connection.setRequestProperty ("X-Api-Key", apiKey);
+
+            if (connection.getResponseCode () == HttpURLConnection.HTTP_OK)
+            {
+                Scanner scanner  = new Scanner (connection.getInputStream ());
+                String  response = scanner.nextLine ();
+                scanner.close ();
+                JSONObject jsonData = new JSONObject (response);
+                if (jsonData.getString ("word").length () <= 8)
+                {
+                    return jsonData.getString ("word");
+                }
+                else
+                {
+                    word = getRandomWordFromApi ();
+                }
+            }
+            else
+            {
+                System.err.println ("Error: " + connection.getResponseCode ());
+                return null;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace ();
+            return null;
+        }
+        catch (JSONException e)
+        {
+            throw new RuntimeException (e);
+        }
+        return null;
     }
 
     public void setHint ()
     {
-        hintLabel.setText (hint_str);
-        letterCountLabel.setText (letter_size + " Letters");
+        hintLabel.setText ("No Hints :(");
+        letterCountLabel.setText (letterSize + " Letters");
 
-        if (letter_size == 7)
+        if (letterSize == 7)
         {
             tf8.setVisible (false);
         }
-        if (letter_size == 6)
+        if (letterSize == 6)
         {
             tf7.setVisible (false);
             tf8.setVisible (false);
         }
-        if (letter_size == 5)
+        if (letterSize == 5)
         {
             tf6.setVisible (false);
             tf7.setVisible (false);
             tf8.setVisible (false);
         }
-        if (letter_size == 4)
+        if (letterSize == 4)
         {
             tf5.setVisible (false);
             tf6.setVisible (false);
             tf7.setVisible (false);
             tf8.setVisible (false);
         }
-        if (letter_size == 3)
+        if (letterSize == 3)
         {
             tf4.setVisible (false);
             tf5.setVisible (false);
@@ -162,8 +212,6 @@ public class DefaultController
             wrongGuess ();
         }
     }
-
-    //--------------------------------------------------CORRECT GUESS---------------------------------------------------
 
     int score = 0;
 
@@ -263,7 +311,7 @@ public class DefaultController
             tipLabel.setText ("Just one more correct guess and you're there!");
         }
 
-        if (score >= letter_size)
+        if (score >= letterSize)
         {
             LocalDateTime endTime   = LocalDateTime.now ();
             Duration      duration  = Duration.between (startTime, endTime);
@@ -273,13 +321,11 @@ public class DefaultController
             winLabel.setVisible (true);
             tipLabel.setText ("Congratulations! You've won the game!");
 
-            DatabaseHandler dbHandler = new DatabaseHandler();
-            dbHandler.saveGameRecord(MenuController.playerName, score, timeTaken, endTime);
+            DatabaseHandler dbHandler = new DatabaseHandler ();
+            dbHandler.saveGameRecord (MenuController.playerName, score, timeTaken, endTime);
         }
         scoreLabel.setText (String.valueOf (score));
     }
-
-    //---------------------------------------------------WRONG GUESS----------------------------------------------------
 
     int life = 6;
 
