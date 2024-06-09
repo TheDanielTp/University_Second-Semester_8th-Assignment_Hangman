@@ -8,6 +8,7 @@ module hangman {
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires org.json;
+    requires com.microsoft.sqlserver.jdbc;
 
     opens hangman to javafx.fxml;
     exports hangman;

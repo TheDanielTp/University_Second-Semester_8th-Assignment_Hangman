@@ -34,14 +34,14 @@
                         <Font name="Kristen ITC" size="17.0" />
                     </font>
                 </Label>
-            <AnchorPane fx:id="leaderBoard" layoutX="68.0" layoutY="116.0" prefHeight="690.0" prefWidth="443.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 5; -fx-border-radius: 30; -fx-background-radius: 30;" visible="false">
+            <AnchorPane fx:id="leaderBoard" layoutX="68.0" layoutY="116.0" prefHeight="690.0" prefWidth="443.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 5; -fx-border-radius: 30; -fx-background-radius: 30;">
                <children>
-                  <TableView layoutX="13.0" layoutY="14.0" prefHeight="588.0" prefWidth="417.0">
+                  <TableView fx:id="table" layoutX="13.0" layoutY="14.0" prefHeight="588.0" prefWidth="417.0">
                     <columns>
-                      <TableColumn prefWidth="107.0" text="Username" />
+                      <TableColumn fx:id="col1" prefWidth="107.0" text="Username" />
                       <TableColumn prefWidth="103.0" text="Score" />
-                        <TableColumn prefWidth="104.0" text="Mistakes" />
-                        <TableColumn prefWidth="102.0" text="Time" />
+                        <TableColumn prefWidth="104.0" text="Time" />
+                        <TableColumn prefWidth="102.0" text="Date" />
                     </columns>
                   </TableView>
                </children>

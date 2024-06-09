@@ -11,6 +11,18 @@ public class DatabaseManager
 
     static
     {
+        try
+        {
+            Class.forName ("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println (e.getMessage ());
+        }
+    }
+
+    static
+    {
         System.setProperty ("java.library.path", "D:\\Java\\#Libraries\\sqljdbc_12.6\\enu\\auth\\x64");
         try
         {

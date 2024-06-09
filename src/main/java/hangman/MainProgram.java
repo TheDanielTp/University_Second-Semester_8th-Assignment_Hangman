@@ -7,23 +7,23 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 public class MainProgram extends Application
 {
     public static void main (String[] args)
     {
-        System.setProperty ("java.library.path", "D:\\Java\\#Libraries\\sqljdbc_12.6\\enu\\auth\\x64");
         try
         {
-            Field fieldSysPath = ClassLoader.class.getDeclaredField ("sys_paths");
-            fieldSysPath.setAccessible (true);
-            fieldSysPath.set (null, null);
+            System.load ("D:\\Java\\#Libraries\\sqljdbc_12.6\\enu\\auth\\x64\\mssql-jdbc_auth-12.6.2.x64.dll");
         }
-        catch (Exception ex)
+        catch (UnsatisfiedLinkError e)
         {
-            ex.printStackTrace ();
+            System.err.println (STR."Failed to load SQL Server authentication DLL: \{e.getMessage ()}");
+
+            System.out.println (e.getMessage ());
+            return;
         }
+
         launch (args);
     }
 
