@@ -21,12 +21,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Scanner;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DefaultController
 {
     LocalDateTime startTime;
+
+    String Key = "3GHeGCidPr0E3R27KSGtAMFiNiSMfFk0t9JxwXb2";
 
     @FXML
     ImageView img;
@@ -110,48 +111,37 @@ public class DefaultController
         setHint ();
     }
 
-    public String getRandomWordFromApi ()
+    public void getRandomWordFromApi ()
     {
-        String apiUrl = "https://api.api-ninjas.com/v1/randomword";
-        String apiKey = "3GHeGCidPr0E3R27KSGtAMFiNiSMfFk0t9JxwXb2";
+        String Url = "https://api.api-ninjas.com/v1/randomword";
+
         try
         {
-            URL url = new URL (apiUrl);
+            URL url = new URL (Url);
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
-            connection.setRequestProperty ("X-Api-Key", apiKey);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection ();
+            httpURLConnection.setRequestProperty ("X-Api-Key", Key);
 
-            if (connection.getResponseCode () == HttpURLConnection.HTTP_OK)
+            if (httpURLConnection.getResponseCode () == HttpURLConnection.HTTP_OK)
             {
-                Scanner scanner  = new Scanner (connection.getInputStream ());
-                String  response = scanner.nextLine ();
-                scanner.close ();
-                JSONObject jsonData = new JSONObject (response);
+                Scanner scanner        = new Scanner (httpURLConnection.getInputStream ());
+                String  serverResponse = scanner.nextLine ();
+
+                JSONObject jsonData = new JSONObject (serverResponse);
                 if (jsonData.getString ("word").length () <= 8)
                 {
-                    return jsonData.getString ("word");
+                    word = jsonData.getString ("word");
                 }
                 else
                 {
-                    word = getRandomWordFromApi ();
+                    getRandomWordFromApi ();
                 }
             }
-            else
-            {
-                System.err.println ("Error: " + connection.getResponseCode ());
-                return null;
-            }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            e.printStackTrace ();
-            return null;
+            System.out.println (e.getMessage ());
         }
-        catch (JSONException e)
-        {
-            throw new RuntimeException (e);
-        }
-        return null;
     }
 
     public void setHint ()
@@ -313,16 +303,15 @@ public class DefaultController
 
         if (score >= letterSize)
         {
-            LocalDateTime endTime   = LocalDateTime.now ();
-            Duration      duration  = Duration.between (startTime, endTime);
-            int           timeTaken = (int) duration.getSeconds ();
+            LocalDateTime endTime = LocalDateTime.now();
+            Duration duration = Duration.between(startTime, endTime);
+            int timeTaken = (int) duration.getSeconds();
 
-            checkButton.setVisible (false);
-            winLabel.setVisible (true);
-            tipLabel.setText ("Congratulations! You've won the game!");
+            checkButton.setVisible(false);
+            winLabel.setVisible(true);
+            tipLabel.setText("Congratulations! You've won the game!");
 
-            DatabaseHandler dbHandler = new DatabaseHandler ();
-            dbHandler.saveGameRecord (MenuController.playerName, score, timeTaken, endTime);
+            DatabaseManager.saveMatchData(MenuController.playerName, word, timeTaken, score);
         }
         scoreLabel.setText (String.valueOf (score));
     }

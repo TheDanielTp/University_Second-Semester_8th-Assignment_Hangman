@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -32,6 +34,23 @@
                         <Font name="Kristen ITC" size="17.0" />
                     </font>
                 </Label>
+            <AnchorPane fx:id="leaderBoard" layoutX="68.0" layoutY="116.0" prefHeight="690.0" prefWidth="443.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 5; -fx-border-radius: 30; -fx-background-radius: 30;" visible="false">
+               <children>
+                  <TableView layoutX="13.0" layoutY="14.0" prefHeight="588.0" prefWidth="417.0">
+                    <columns>
+                      <TableColumn prefWidth="107.0" text="Username" />
+                      <TableColumn prefWidth="103.0" text="Score" />
+                        <TableColumn prefWidth="104.0" text="Mistakes" />
+                        <TableColumn prefWidth="102.0" text="Time" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="725.0" mnemonicParsing="false" onAction="#viewLeaderBoard" prefHeight="64.0" prefWidth="216.0" style="-fx-background-color: RED; -fx-border-color: RED; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Leaderboard" textFill="WHITE">
+               <font>
+                  <Font name="Kristen ITC" size="24.0" />
+               </font>
+            </Button>
             <AnchorPane fx:id="selectLevel" layoutX="67.0" layoutY="116.0" prefHeight="728.0" prefWidth="443.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 5; -fx-border-radius: 30; -fx-background-radius: 30;" visible="false">
                <children>
                   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="632.0" mnemonicParsing="false" onAction="#runDefaultGame" prefHeight="23.0" prefWidth="177.0" style="-fx-background-color: LIME; -fx-border-color: LIME; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Level 1">

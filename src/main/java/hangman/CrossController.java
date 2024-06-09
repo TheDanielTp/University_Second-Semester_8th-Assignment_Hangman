@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Scanner;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CrossController
@@ -312,8 +311,7 @@ public class CrossController
             winLabel.setVisible (true);
             tipLabel.setText ("Congratulations! You've won the game!");
 
-            DatabaseHandler dbHandler = new DatabaseHandler ();
-            dbHandler.saveGameRecord (MenuController.playerName, score, timeTaken, endTime);
+            DatabaseManager.saveMatchData(MenuController.playerName, word, timeTaken, score);
         }
         scoreLabel.setText (String.valueOf (score));
     }

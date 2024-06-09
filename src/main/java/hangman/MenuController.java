@@ -30,6 +30,9 @@ public class MenuController
     @FXML
     Label nameError;
 
+    @FXML
+    AnchorPane leaderBoard;
+
     public void setSelectLevel (ActionEvent event)
     {
         selectLevel.setVisible (true);
@@ -75,6 +78,11 @@ public class MenuController
         centerStage (window);
         System.out.println ("> Game is Running");
         window.show ();
+    }
+
+    public void viewLeaderBoard ()
+    {
+        leaderBoard.setVisible (! leaderBoard.isVisible ());
     }
 
     private void centerStage (Stage stage)
