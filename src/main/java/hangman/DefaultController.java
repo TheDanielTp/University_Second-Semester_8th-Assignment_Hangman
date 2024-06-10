@@ -303,15 +303,15 @@ public class DefaultController
 
         if (score >= letterSize)
         {
-            LocalDateTime endTime = LocalDateTime.now();
-            Duration duration = Duration.between(startTime, endTime);
-            int timeTaken = (int) duration.getSeconds();
+            LocalDateTime endTime   = LocalDateTime.now ();
+            Duration      duration  = Duration.between (startTime, endTime);
+            int           timeTaken = (int) duration.getSeconds ();
 
-            checkButton.setVisible(false);
-            winLabel.setVisible(true);
-            tipLabel.setText("Congratulations! You've won the game!");
+            checkButton.setVisible (false);
+            winLabel.setVisible (true);
+            tipLabel.setText ("Congratulations! You've won the game!");
 
-            DatabaseManager.saveMatchData(MenuController.playerName, word, timeTaken, score);
+            DatabaseManager.createGame (MenuController.currentUser.username (), word, 6 - life, timeTaken, true);
         }
         scoreLabel.setText (String.valueOf (score));
     }

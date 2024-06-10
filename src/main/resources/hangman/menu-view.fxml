@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -24,7 +25,7 @@
                         <Font name="Kristen ITC" size="36.0" />
                     </font>
                 </Label>
-                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="651.0" mnemonicParsing="false" onAction="#setSelectLevel" prefHeight="23.0" prefWidth="177.0" style="-fx-background-color: RED; -fx-border-color: RED; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Start" textFill="WHITE">
+                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="651.0" mnemonicParsing="false" onAction="#signUpLogin" prefHeight="23.0" prefWidth="177.0" style="-fx-background-color: RED; -fx-border-color: RED; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Start" textFill="WHITE">
                     <font>
                         <Font name="Kristen ITC" size="24.0" />
                     </font>
@@ -51,6 +52,60 @@
                   <Font name="Kristen ITC" size="24.0" />
                </font>
             </Button>
+            <AnchorPane fx:id="loginMenu" layoutX="67.0" layoutY="116.0" prefHeight="728.0" prefWidth="443.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 5; -fx-border-radius: 30; -fx-background-radius: 30;" visible="false">
+               <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="132.0" layoutY="306.0" mnemonicParsing="false" onAction="#signUp" prefHeight="23.0" prefWidth="177.0" style="-fx-background-color: LIME; -fx-border-color: LIME; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Signup">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </Button>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="14.0" prefHeight="76.0" prefWidth="379.0" text="Sign Up" textFill="#00a1ff">
+                     <font>
+                        <Font name="Kristen ITC" size="36.0" />
+                     </font>
+                  </Label>
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="132.0" layoutY="615.0" mnemonicParsing="false" onAction="#login" prefHeight="23.0" prefWidth="177.0" style="-fx-background-color: #39b6ff; -fx-border-color: #39b6ff; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Login">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="nameField" alignment="CENTER" layoutX="48.0" layoutY="103.0" prefHeight="62.0" prefWidth="347.0" promptText="Name" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 4;">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </TextField>
+                  <Label fx:id="nameError1" layoutX="91.0" layoutY="170.0" text="Please enter your name to continue" textFill="RED" visible="false">
+                     <font>
+                        <Font name="Kristen ITC" size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="usernameField" alignment="CENTER" layoutX="47.0" layoutY="170.0" prefHeight="62.0" prefWidth="347.0" promptText="Username" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 4;">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField fx:id="passwordField" alignment="CENTER" layoutX="47.0" layoutY="237.0" prefHeight="62.0" prefWidth="347.0" promptText="Password" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 4; -fx-border-radius: 15;">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </PasswordField>
+                  <TextField fx:id="usernameFieldLogin" alignment="CENTER" layoutX="48.0" layoutY="480.0" prefHeight="62.0" prefWidth="347.0" promptText="Username" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 4;">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField fx:id="passwordFieldLogin" alignment="CENTER" layoutX="48.0" layoutY="547.0" prefHeight="62.0" prefWidth="347.0" promptText="Password" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 4; -fx-border-radius: 15;">
+                     <font>
+                        <Font name="Kristen ITC" size="24.0" />
+                     </font>
+                  </PasswordField>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="392.0" prefHeight="76.0" prefWidth="379.0" text="Login" textFill="#00a1ff">
+                     <font>
+                        <Font name="Kristen ITC" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
             <AnchorPane fx:id="selectLevel" layoutX="67.0" layoutY="116.0" prefHeight="728.0" prefWidth="443.0" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-width: 5; -fx-border-radius: 30; -fx-background-radius: 30;" visible="false">
                <children>
                   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="632.0" mnemonicParsing="false" onAction="#runDefaultGame" prefHeight="23.0" prefWidth="177.0" style="-fx-background-color: LIME; -fx-border-color: LIME; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 5;" text="Level 1">
@@ -68,16 +123,6 @@
                         <Font name="Kristen ITC" size="24.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="nameField" alignment="CENTER" layoutX="48.0" layoutY="108.0" prefHeight="62.0" prefWidth="347.0" promptText="Name" style="-fx-background-color: ffffff; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 4;">
-                     <font>
-                        <Font name="Kristen ITC" size="24.0" />
-                     </font>
-                  </TextField>
-                  <Label fx:id="nameError" layoutX="91.0" layoutY="170.0" text="Please enter your name to continue" textFill="RED" visible="false">
-                     <font>
-                        <Font name="Kristen ITC" size="15.0" />
-                     </font>
-                  </Label>
                </children>
             </AnchorPane>
          </children>

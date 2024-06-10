@@ -8,20 +8,21 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class MenuController
 {
+    static User currentUser;
+
     public static String playerName;
 
     @FXML
@@ -31,10 +32,64 @@ public class MenuController
     TextField nameField;
 
     @FXML
-    Label nameError;
+    TextField usernameField;
+
+    @FXML
+    PasswordField passwordField;
+
+    @FXML
+    TextField usernameFieldLogin;
+
+    @FXML
+    TextField passwordFieldLogin;
 
     @FXML
     AnchorPane leaderBoard;
+
+    @FXML
+    AnchorPane loginMenu;
+
+    public void signUpLogin ()
+    {
+        loginMenu.setVisible (true);
+    }
+
+    public void signUp () throws SQLException
+    {
+        String name     = nameField.getText ();
+        String username = usernameField.getText ();
+        String password = passwordField.getText ();
+
+        DatabaseManager.createUser (username, password, name);
+        currentUser = DatabaseManager.readUser (username);
+
+        setSelectLevel (new ActionEvent ());
+    }
+
+    public void login () throws SQLException
+    {
+        String username = usernameFieldLogin.getText ();
+        String password = passwordFieldLogin.getText ();
+
+        if (DatabaseManager.findUser (username))
+        {
+            User user = DatabaseManager.readUser (username);
+            assert user != null;
+            if (password.equals (user.password ()))
+            {
+                currentUser = user;
+                setSelectLevel (new ActionEvent ());
+            }
+            else
+            {
+                System.out.println ("> wrong password");
+            }
+        }
+        else
+        {
+            System.out.println ("> user not found");
+        }
+    }
 
     public void setSelectLevel (ActionEvent event)
     {
@@ -43,13 +98,6 @@ public class MenuController
 
     public void runDefaultGame (ActionEvent event) throws IOException
     {
-        playerName = nameField.getText ();
-        if (playerName.isEmpty ())
-        {
-            nameError.setVisible (true);
-            return;
-        }
-
         Parent parent = FXMLLoader.load (Objects.requireNonNull (getClass ().getResource ("default-view.fxml")));
         Stage  window = (Stage) ((Node) event.getSource ()).getScene ().getWindow ();
 
@@ -64,13 +112,6 @@ public class MenuController
 
     public void runCrossGame (ActionEvent event) throws IOException
     {
-        playerName = nameField.getText ();
-        if (playerName.isEmpty ())
-        {
-            nameError.setVisible (true);
-            return;
-        }
-
         Parent parent = FXMLLoader.load (Objects.requireNonNull (getClass ().getResource ("cross-view.fxml")));
         Stage  window = (Stage) ((Node) event.getSource ()).getScene ().getWindow ();
 

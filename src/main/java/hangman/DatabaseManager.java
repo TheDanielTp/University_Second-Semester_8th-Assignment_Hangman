@@ -1,89 +1,129 @@
 package hangman;
 
 import java.sql.*;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DatabaseManager
 {
-    private static final String CONNECTION_URL = "jdbc:sqlserver://DESKTOP-8J86FSR;databaseName=HangmanGame;integratedSecurity=true;";
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hangman";
+    private static final String USER     = "postgres";
+    private static final String PASSWORD = "123456789";
 
-    static
+    private static Connection connect () throws SQLException
     {
         try
         {
-            Class.forName ("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName ("org.postgresql.Driver");
         }
         catch (ClassNotFoundException e)
         {
             System.out.println (e.getMessage ());
         }
+        return DriverManager.getConnection (JDBC_URL, USER, PASSWORD);
     }
 
-    static
+    public static void createUser (String username, String password, String name)
     {
-        System.setProperty ("java.library.path", "D:\\Java\\#Libraries\\sqljdbc_12.6\\enu\\auth\\x64");
-        try
+        try (Connection connect = connect ())
         {
-            Field fieldSysPath = ClassLoader.class.getDeclaredField ("sys_paths");
-            fieldSysPath.setAccessible (true);
-            fieldSysPath.set (null, null);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace ();
-        }
-
-        try
-        {
-            Class.forName ("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace ();
-        }
-    }
-
-    public static void saveMatchData (String playerName, String word, int timeTaken, int score)
-    {
-        String insertSQL = "INSERT INTO MatchData (PlayerName, Word, TimeTaken, Score) VALUES (?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection (CONNECTION_URL);
-             PreparedStatement pstmt = conn.prepareStatement (insertSQL))
-        {
-            pstmt.setString (1, playerName);
-            pstmt.setString (2, word);
-            pstmt.setInt (3, timeTaken);
-            pstmt.setInt (4, score);
-
-            pstmt.executeUpdate ();
+            String            query = "INSERT INTO user_info (name, username, password) VALUES (?, ?, ?)";
+            PreparedStatement ps    = connect.prepareStatement (query);
+            ps.setString (1, name);
+            ps.setString (2, username);
+            ps.setString (3, password);
+            ps.executeUpdate ();
+            ps.close ();
         }
         catch (SQLException e)
         {
-            e.printStackTrace ();
+            System.out.println (e.getMessage ());
         }
     }
 
-    public static List <String> getLeaderboard ()
+    public static void createGame (String username, String word, int wrongGuesses, int time, boolean win)
     {
-        List <String> leaderboard = new ArrayList <> ();
-        String        querySQL    = "SELECT PlayerName, Score, TimeTaken FROM MatchData ORDER BY Score DESC, TimeTaken ASC";
+        UUID uuid = UUID.randomUUID ();
 
-        try (Connection conn = DriverManager.getConnection (CONNECTION_URL);
-             Statement stmt = conn.createStatement ();
-             ResultSet rs = stmt.executeQuery (querySQL))
+        try (Connection conn = connect ())
         {
-            while (rs.next ())
-            {
-                String entry = String.format ("Player: %s, Score: %d, Time: %d seconds", rs.getString ("PlayerName"), rs.getInt ("Score"), rs.getInt ("TimeTaken"));
-                leaderboard.add (entry);
-            }
+            String            query = "INSERT INTO game_info (uuid, word, wrong_guesses, win, time, username) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps    = conn.prepareStatement (query);
+            ps.setObject (1, uuid);
+            ps.setString (2, word);
+            ps.setInt (3, wrongGuesses);
+            ps.setBoolean (4, win);
+            ps.setInt (5, time);
+            ps.setString (6, username);
+            ps.executeUpdate ();
+            ps.close ();
         }
         catch (SQLException e)
         {
-            e.printStackTrace ();
+            System.out.println (e.getMessage ());
         }
-        return leaderboard;
+    }
+
+    public static User readUser (String username) throws SQLException
+    {
+        Connection        conn  = connect ();
+        String            query = "SELECT * FROM user_info WHERE username = ?";
+        PreparedStatement ps    = conn.prepareStatement (query);
+        ps.setString (1, username);
+        ResultSet rs = ps.executeQuery ();
+
+        conn.close ();
+
+        if (rs.next ())
+        {
+            return new User (
+                    rs.getString ("username"),
+                    rs.getString ("password"),
+                    rs.getString ("name")
+            );
+        }
+
+        return null;
+    }
+
+    public static Boolean findUser (String username) throws SQLException
+    {
+        Connection        conn  = connect ();
+        String            query = "SELECT * FROM user_info WHERE username = ?";
+        PreparedStatement ps    = conn.prepareStatement (query);
+        ps.setString (1, username);
+        ResultSet rs = ps.executeQuery ();
+
+        conn.close ();
+
+        return rs.next ();
+    }
+
+    public static List <Game> readGame () throws SQLException
+    {
+        List <Game> games = new ArrayList <> ();
+
+        Connection conn  = connect ();
+        String     query = "SELECT * FROM game_info";
+        Statement  stmt  = conn.createStatement ();
+        ResultSet  rs    = stmt.executeQuery (query);
+
+        conn.close ();
+
+        while (rs.next ())
+        {
+            Game game = new Game (
+                    (UUID) rs.getObject ("game_id"),
+                    rs.getString ("username"),
+                    rs.getString ("word"),
+                    rs.getInt ("wrong_guesses"),
+                    rs.getInt ("time"),
+                    rs.getBoolean ("win")
+            );
+            games.add (game);
+        }
+
+        return games;
     }
 }
