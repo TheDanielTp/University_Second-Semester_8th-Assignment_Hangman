@@ -44,13 +44,13 @@ public class DatabaseManager
 
     public static void createGame (String username, String word, int wrongGuesses, int time, boolean win)
     {
-        UUID uuid = UUID.randomUUID ();
+        UUID game_id = UUID.randomUUID ();
 
         try (Connection conn = connect ())
         {
-            String            query = "INSERT INTO game_info (uuid, word, wrong_guesses, win, time, username) VALUES (?, ?, ?, ?, ?, ?)";
+            String            query = "INSERT INTO game_info (game_id, word, wrong_guesses, win, time, username) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps    = conn.prepareStatement (query);
-            ps.setObject (1, uuid);
+            ps.setObject (1, game_id);
             ps.setString (2, word);
             ps.setInt (3, wrongGuesses);
             ps.setBoolean (4, win);
@@ -58,6 +58,8 @@ public class DatabaseManager
             ps.setString (6, username);
             ps.executeUpdate ();
             ps.close ();
+
+            System.out.println ("> saved game data");
         }
         catch (SQLException e)
         {

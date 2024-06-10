@@ -1,9 +1,9 @@
 package hangman;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -13,17 +13,17 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class MenuController
+public class MenuController implements Initializable
 {
     static User currentUser;
-
-    public static String playerName;
 
     @FXML
     AnchorPane selectLevel;
@@ -45,6 +45,9 @@ public class MenuController
 
     @FXML
     AnchorPane leaderBoard;
+
+    @FXML
+    ListView <String> leaderBoardList;
 
     @FXML
     AnchorPane loginMenu;
@@ -138,5 +141,22 @@ public class MenuController
 
         stage.setX (centerX);
         stage.setY (centerY);
+    }
+
+    @Override
+    public void initialize (URL url, ResourceBundle resourceBundle)
+    {
+        try
+        {
+            List <Game> records = DatabaseManager.readGame ();
+            for (Game record : records)
+            {
+                leaderBoardList.getItems ().add (record.toString ());
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println (e.getMessage ());
+        }
     }
 }
